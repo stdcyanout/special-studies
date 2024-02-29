@@ -13,12 +13,17 @@ def getline():
         return data[count].strip()
 
 def main():
-    n,m=map(int,getline().split())
-    s=[]
-    for i in range(n):
-        s.append(max(list(map(int,getline().split()))));
-    solve=sum(s)
-    print(solve)
+    s=getline()
+    lower=0
+    upper=0
+    for c in s:
+        if c.isalpha():
+            if c.islower():
+                lower+=1
+            else:
+                upper+=1
+    print(lower)
+    print(upper)
 
 if __name__ == "__main__":
     main()

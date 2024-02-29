@@ -13,12 +13,14 @@ def getline():
         return data[count].strip()
 
 def main():
-    n,m=map(int,getline().split())
-    s=[]
-    for i in range(n):
-        s.append(max(list(map(int,getline().split()))));
-    solve=sum(s)
-    print(solve)
+    s=getline().lower()
+    alpha=[0]*26
+    for c in s:
+        if c.isalpha():
+            alpha[ord(c)-ord('a')]+=1
+    for i in range(26):
+        if alpha[i]:
+            print(chr(ord('a')+i), alpha[i])
 
 if __name__ == "__main__":
     main()
