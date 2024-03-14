@@ -11,7 +11,7 @@ def main():
     martix = [[0] * d for i in range(c)]
     for i in range(c):
         martix[i] = list(map(int, input().split()))
-    feature = [[0] * (a - c + 1) for i in range(b - d + 1)]
+    feature = [[0] * (b - d + 1) for i in range(a - c + 1)]
     for i in range(a - c + 1):
         for j in range(b - d + 1):
             for k in range(c):
