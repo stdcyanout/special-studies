@@ -4,8 +4,8 @@ def input():
 
 n, m = 0, 0
 maze = []
-dy = [1, 0, -1, 0]
-dx = [0, 1, 0, -1]
+dy = [0, 1, 0, -1]
+dx = [1, 0, -1, 0]
 solution = 0
 
 def printall():
@@ -27,7 +27,7 @@ def check(i, j):
 
 def dfs(y, x):
     global n, m, maze, dy, dx, solution
-    if y == 1 and x == 1:
+    if y == n - 2 and x == m - 2:
         solution += 1
         print(f"solution#{solution}")
         printall()
@@ -45,8 +45,8 @@ def main():
     for i in range(n):
         maze.append([])
         maze[i] = [int(j) for j in input().split()]
-    maze[n - 2][m - 2] = 1
-    dfs(n - 2,m - 2)
+    maze[1][1] = 1
+    dfs(1, 1)
 
 if __name__ == "__main__":
     main()
