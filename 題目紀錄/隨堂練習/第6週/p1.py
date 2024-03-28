@@ -7,10 +7,9 @@ f = []
 def solve(n):
     if f[n] == 0:
         if n == 0 or n == 1:
-            tmp = 1
+            f[n] = 1
         else:
-            tmp = solve(n-1) + solve(n-2)
-        f[n] = tmp
+            f[n] = solve(n-1) + solve(n-2)
         return f[n]
     else:
         return f[n]
