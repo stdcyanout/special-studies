@@ -19,5 +19,5 @@ int main()
     a[4]=a[3]*7;
     a[5]=a[3]*365;
     for(int i=0;i<6;i++)
-        cout << "1 Light-" << s[i] << " is " << a[i] << " meters.\n";
+        cout << "1 Light-" << s[i] << " is " << a[i] << " metres.\n";
 }
