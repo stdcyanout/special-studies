@@ -32,7 +32,11 @@ template <class T> void orange(T L, T R)
     cerr << "\e[0m\n";
 }
 
+#define N 30
+
 vector<pii> v;
+vector<array<int, 3>> back;
+int n, m, ret;
 
 void simplify() {
     for (int i = 0; i < v.size(); ) {
@@ -52,30 +56,94 @@ void simplify() {
             v.erase(v.begin() + i);
         }
     }
+    if (v.empty()) v.push_back({0, n});
 }
 
 void add (int i, int x) {
     pii p = v[i];
     v[i] = {-x, p.S - x};
     v.insert(v.begin() + i, {p.F + x, x});
+    if (v[i].F == 0) back.push_back({i - 1, v[i - 1].S, x});
+    else back.push_back({i, 0, x});
     simplify();
+}
+
+void rm (int i, int k, int x) {
+    if (k != 0) {
+        pii t = v[i];
+        v[i] = {0, t.S - k};
+        v.insert(v.begin() + i, {t.F, k});
+        i++;
+    }
+    pii p = v[i];
+    v[i] = {x, p.S - x};
+    v.insert(v.begin() + i, {p.F - x, x});
+    simplify();
+}
+
+void rollback() {
+    array<int, 3> cur = back.back();
+    rm (cur[0], cur[1], cur[2]);
+    back.pop_back();
 }
 
 void print() {
     for (pii p : v)
         cout << "(" << p.F << ", " << p.S << ")\n";
+    cout << "\n";
+}
+
+void solve (int c) {
+    if (c >= ret)
+        return;
+
+    int sum = 0, t = m + 1, mi = 0;
+    for (int i = 0; i < v.size(); i++) {
+        sum += v[i].F;
+        if (sum < t) {
+            t = sum;
+            mi = i;
+        }
+    }
+
+    int r = min(m - t, v[mi].S);
+    for (int l = 1; l <= r; l++) {
+        add(mi, l);
+        if (v.size() == 1 && v[0].F == m && v[0].S == n) {
+            ret = min(c, ret);
+        } else {
+            solve(c + 1);
+        }
+        rollback();
+    }
+}
+
+void init () {
+    int dp[N][N];
+    memset(dp, 0x3F, sizeof(dp));
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            if (i == j) {
+                dp[i][j] = 1;
+                continue;
+            }
+            for (int k = 1; k < i; k++) {
+                dp[i][j] = min(dp[i][j], dp[k][j] + dp[i - k][j]);
+            }
+            for (int k = 1; k < j; k++) {
+                dp[i][j] = min(dp[i][j], dp[i][k] + dp[i][j - k]);
+            }
+        }
+    }
+    ret = dp[n][m];
 }
 
 signed main()
 {
     fastio;
-    int n, m;
     cin >> n >> m;
     v.pb({0, n});
-    add(0, 3);
-    add(1, 5);
-    add(2, 2);
-    add(3, 4);
-    add(2, 1);
-    print();
+    init();
+    solve(1);
+    cout << ret << endl;
 }
