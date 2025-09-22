@@ -32,7 +32,7 @@ template <class T> void orange(T L, T R)
     cerr << "\e[0m\n";
 }
 
-#define N 30
+#define N 40
 
 vector<pii> v;
 vector<array<int, 3>> back;
@@ -107,7 +107,7 @@ void solve (int c) {
     }
 
     int r = min(m - t, v[mi].S);
-    for (int l = 1; l <= r; l++) {
+    for (int l = r; l >= 1; l--) {
         add(mi, l);
         if (v.size() == 1 && v[0].F == m && v[0].S == n) {
             ret = min(c, ret);
@@ -118,32 +118,15 @@ void solve (int c) {
     }
 }
 
-void init () {
-    int dp[N][N];
-    memset(dp, 0x3F, sizeof(dp));
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= m; j++) {
-            if (i == j) {
-                dp[i][j] = 1;
-                continue;
-            }
-            for (int k = 1; k < i; k++) {
-                dp[i][j] = min(dp[i][j], dp[k][j] + dp[i - k][j]);
-            }
-            for (int k = 1; k < j; k++) {
-                dp[i][j] = min(dp[i][j], dp[i][k] + dp[i][j - k]);
-            }
-        }
-    }
-    ret = dp[n][m];
-}
-
 signed main()
 {
-    fastio;
+    clock_t a, b;
     cin >> n >> m;
+    a = clock();
     v.pb({0, n});
-    init();
+    ret = max(n, m);
     solve(1);
+    b = clock();
     cout << ret << endl;
+    cout << fixed << setprecision(6) << double(b - a) / CLOCKS_PER_SEC << endl;
 }

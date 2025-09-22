@@ -66,6 +66,7 @@ int f(int a, int b)
 void rollback(int h, int k, int c)
 {
     int l = optimal[c];
+    cout << h << " " << k << " " << l << "\n";
     c = c + 1;
     for(i = 0; i < l; i++)
         for(j = 0; j < l; j++)
